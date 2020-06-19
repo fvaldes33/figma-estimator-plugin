@@ -26,7 +26,6 @@ const App: React.FC = () => {
       case PluginMessageType.SetEstimates:
         if (pluginMessage.estimates) {
           setEstimates(pluginMessage.estimates);
-          console.log('pluginMessage.estimates', pluginMessage.estimates)
         }
       default:
         break;

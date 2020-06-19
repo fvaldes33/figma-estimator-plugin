@@ -22,6 +22,10 @@ function getHighlighter(): FrameNode {
 function highlightEstimate(id: string, toggle: boolean) {
   const node = figma.currentPage.findOne(node => node.id === id);
 
+  if (!node) {
+    return;
+  }
+
   if (!toggle) {
     // lets remove that shit
     const hl = figma.currentPage.findOne(node => node.name === "ESTIMATOR");
@@ -45,8 +49,10 @@ function highlightEstimate(id: string, toggle: boolean) {
 
 function openEstimate(id: string) {
   const node = figma.currentPage.findOne(node => node.id === id);
-  figma.currentPage.selection = [node];
-  highlightEstimate(id, false);
+  if (node) {
+    figma.currentPage.selection = [node];
+    highlightEstimate(id, false);
+  }
 }
 
 function getAllEstimates() {
@@ -78,6 +84,7 @@ function saveEstimate(items: EstimateLineItem[]) {
   const node: SceneNode = selection[0];
   node.setPluginData('estimator', JSON.stringify(items));
   figma.currentPage.selection = [];
+  figma.notify('Your estimate has been saved!');
   getAllEstimates();
 }
 
@@ -102,6 +109,9 @@ function selectionListener() {
   } else {
     figma.ui.postMessage({ type: PluginMessageType.SetNode, node: undefined });
   }
+
+  // clear out deleted nodes
+  getAllEstimates();
 }
 
 selectionListener();
