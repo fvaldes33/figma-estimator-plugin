@@ -1,0 +1,168 @@
+body {
+    /* padding: 8px; */
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    width: 100%;
+}
+
+.plugin {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.empty-state {
+    align-items: center;
+    display: flex;
+    height: 100%;
+    text-align: center;
+}
+
+.empty-state h2 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    font-size: 32px;
+}
+
+.error {
+    font-size: 11px;
+    font-weight: 500;
+    font-style: italic;
+    color: red;
+}
+
+.button {
+    --border-color: rgba(0, 0, 0, 0.8);
+    --border-color-focus: #18A0FB;
+    align-items: center;
+    border-radius: 2px;
+    border: 2px solid var(--border-color);
+    cursor: pointer;
+    display: flex;
+    font-size: 11px;
+    font-weight: 500;
+    height: 30px;
+    height: 32px;
+    justify-content: center;
+    line-height: 16px;
+    outline: none;
+}
+
+.button.destructive {
+    --border-color: #F24822;
+    --border-color-focus: #F24822;
+}
+
+.button:active, .button:focus {
+    border: 2px solid var(--border-color-focus);
+}
+
+.estimates li {
+    align-items: center;
+    display: flex;
+    cursor: pointer;
+    justify-content: space-between;
+    height: 32px;
+    padding: 0 8px;
+    transition: all 0.2s ease;
+}
+
+.estimates.totals li {
+    cursor: initial;
+}
+
+.estimates:not(.totals) li:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.estimates li span {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    line-height: 16px;
+}
+
+.estimates.totals {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.empty-state {
+    align-items: center;
+    display: flex;
+    height: 150px;
+    justify-content: center;
+}
+
+.icon {
+    align-items: center;
+    display: flex;
+    height: 32px;
+    justify-content: center;
+    width: 32px;
+}
+
+.icon:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.section-header, .section-footer {
+    align-items: center;
+    display: flex;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    height: 32px;
+    line-height: 16px;
+    justify-content: space-between;
+    padding-left: 8px;
+}
+
+.section-footer {
+    margin-top: auto;
+    padding-left: 0px;
+}
+
+.input-group {
+    align-items: center;
+    border: 1px solid rgba(0, 0, 0, 0);
+    border-radius: 2px;
+    display: flex;
+}
+
+.input-group input {
+    background: transparent;
+    border: none;
+    font-size: 11px;
+    line-height: 16px;
+    padding: 8px;
+    outline: none;
+}
+
+.input-group:hover {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.input-group-label {
+    padding: 8px 16px;
+}
+
+.input-group-value {
+    border-left: 1px solid rgba(0, 0, 0, 0);
+    width: 60px;
+    text-align: center;
+}
+
+.input-group:hover .input-group-value {
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.line-items li {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    height: 32px;
+}
