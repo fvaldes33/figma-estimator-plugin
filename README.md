@@ -1,3 +1,16 @@
+# Estimator Plugin
+
+This plugin is built to enable devs to provide estimates for components.
+
+## Usage
+- Start the plugin
+- Click on a frame (For now limiting the selection to frames, will consider other node types in the future)
+- Add new line item and provide a label and value
+- Click save
+
+---
+
+## Generic Figma Read Me
 Below are the steps to get your plugin running. You can also find instructions at:
 
   https://www.figma.com/plugin-docs/setup/
