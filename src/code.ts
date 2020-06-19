@@ -37,14 +37,10 @@ function highlightEstimate(id: string, toggle: boolean) {
 
   const newHighlighter = getHighlighter();
   newHighlighter.resize(node.width, node.height);
-  newHighlighter.x = node.x;
-  newHighlighter.y = node.y;
+  newHighlighter.x = 0;
+  newHighlighter.y = 0;
 
-  if (node.parent) {
-    node.parent.appendChild(newHighlighter);
-  } else {
-    figma.currentPage.appendChild(newHighlighter);
-  }
+  (node as FrameNode).appendChild(newHighlighter);
 }
 
 function openEstimate(id: string) {
