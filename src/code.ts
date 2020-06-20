@@ -1,7 +1,7 @@
 import { EstimateLineItem, PluginEvents, PluginMessageType, PluginNode } from './types';
+import { Parser } from 'json2csv';
 
 figma.showUI(__html__);
-
 
 function getHighlighter(): FrameNode {
   const highlighter = figma.createFrame();
@@ -66,7 +66,34 @@ function getAllEstimates() {
       });
     }
   });
+
   figma.ui.postMessage({ type: PluginMessageType.SetEstimates, estimates });
+}
+
+function exportEstimates() {
+  const nodes = figma.currentPage.findAll(node => node.type === "FRAME");
+  const estimates = [];
+
+  nodes.forEach((node: FrameNode) => {
+    const data: EstimateLineItem[] = JSON.parse(node.getPluginData('estimator') || '[]');
+    if (data.length) {
+      data.map((item: EstimateLineItem) => {
+        estimates.push({
+          Frame: node.name,
+          Item: item.label,
+          Hours: item.value
+        })
+      });
+    }
+  });
+
+  try {
+    const parser = new Parser();
+    const csv = parser.parse(estimates);
+    figma.ui.postMessage({ type: PluginMessageType.ExportReady, filename: `${figma.currentPage.name}.csv`, data: csv });
+  } catch (error) {
+
+  }
 }
 
 function saveEstimate(items: EstimateLineItem[]) {
@@ -129,6 +156,9 @@ figma.ui.onmessage = msg => {
       break;
     case PluginEvents.Highlight:
       highlightEstimate(msg.id, msg.toggle);
+      break;
+    case PluginEvents.ExportEstimates:
+      exportEstimates();
       break;
     default:
       break;

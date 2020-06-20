@@ -5,6 +5,26 @@ import './css/ui.css';
 
 declare function require(path: string): any
 
+export function download(filename: string, data: string) {
+  const a: HTMLAnchorElement = document.createElement('a');
+  a.style.display = 'none';
+  document.body.appendChild(a);
+
+  const blob: Blob = new Blob([data], { type: 'octet/stream' });
+  const url: string = window.URL.createObjectURL(blob);
+
+  a.href = url;
+  a.download = filename;
+
+  a.click();
+
+  window.URL.revokeObjectURL(url);
+
+  if (a && a.parentElement) {
+    a.parentElement.removeChild(a);
+  }
+}
+
 const App: React.FC = () => {
   const [items, setItems] = React.useState<EstimateLineItem[]>([]);
   const [error, setError] = React.useState<string>();
@@ -23,10 +43,15 @@ const App: React.FC = () => {
         if (pluginMessage.node && pluginMessage.node.data) {
           setItems(pluginMessage.node.data);
         }
+        break;
       case PluginMessageType.SetEstimates:
         if (pluginMessage.estimates) {
           setEstimates(pluginMessage.estimates);
         }
+        break;
+      case PluginMessageType.ExportReady:
+        download(pluginMessage.filename, pluginMessage.data);
+        break;
       default:
         break;
     }
@@ -75,19 +100,23 @@ const App: React.FC = () => {
   }
 
   const highlight = (id: string, toggle: boolean) => {
-    parent.postMessage({ pluginMessage: { type: PluginEvents.Highlight, id, toggle } }, '*')
+    parent.postMessage({ pluginMessage: { type: PluginEvents.Highlight, id, toggle } }, '*');
   }
 
   const openEstimate = (id: string) => {
-    parent.postMessage({ pluginMessage: { type: PluginEvents.Open, id } }, '*')
+    parent.postMessage({ pluginMessage: { type: PluginEvents.Open, id } }, '*');
   }
 
   const saveEstimate = () => {
-    parent.postMessage({ pluginMessage: { type: PluginEvents.Save, items } }, '*')
+    parent.postMessage({ pluginMessage: { type: PluginEvents.Save, items } }, '*');
   }
 
   const cancel = () => {
-    parent.postMessage({ pluginMessage: { type: PluginEvents.Cancel } }, '*')
+    parent.postMessage({ pluginMessage: { type: PluginEvents.Cancel } }, '*');
+  }
+
+  const exportEstimates = () => {
+    parent.postMessage({ pluginMessage: { type: PluginEvents.ExportEstimates } }, '*');
   }
 
   return (
@@ -154,8 +183,15 @@ const App: React.FC = () => {
                 <div className="section-footer">
                   <ul className="estimates totals">
                     <li>
-                      <span>Total</span>
-                      <span>{estimates.reduce((acc: number, estimate: Estimate) => acc + estimate.total, 0)}</span>
+                      <span className="icon" onClick={() => exportEstimates()}>
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path fillRule="evenodd" clipRule="evenodd" d="M8.35355 12.3536L8 12.7071L7.64645 12.3536L4.64645 9.35355L5.35355 8.64645L7.5 10.7929V3H8.5V10.7929L10.6464 8.64645L11.3536 9.35355L8.35355 12.3536ZM15 14V15H1V14H15Z" fill="black" fillOpacity="0.8" />
+                        </svg>
+                      </span>
+                      <div>
+                        <span style={{ marginRight: '16px' }}>Total</span>
+                        <span>{estimates.reduce((acc: number, estimate: Estimate) => acc + estimate.total, 0)}</span>
+                      </div>
                     </li>
                   </ul>
                 </div>

@@ -73,6 +73,7 @@ ul {
 
 .estimates.totals li {
     cursor: initial;
+    padding-left: 0;
 }
 
 .estimates:not(.totals) li:hover {
@@ -100,6 +101,7 @@ ul {
 .icon {
     align-items: center;
     display: flex;
+    cursor: pointer;
     height: 32px;
     justify-content: center;
     width: 32px;
