@@ -1,4 +1,6 @@
-# Estimator Plugin
+# Devstimates Figma Plugin
+
+![Dev estimates done right](./src/assets/cover.png)
 
 This plugin is built to enable devs to provide estimates for components.
 
